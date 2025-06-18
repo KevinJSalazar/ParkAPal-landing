@@ -61,7 +61,7 @@ async function getReviews() {
       return {};
     }
   } catch (error) {
-    return { error: true, message: `Error al obtener los votos: ${error.message}` };
+    return { error: true, message: `Error al obtener las reseñas: ${error.message}` };
   }
 }
 

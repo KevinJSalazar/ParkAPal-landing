@@ -287,6 +287,7 @@
     </div>
   </section>
 
+  <!-- Sección de reseñas destacadas-->
   <section class="bg-gray-100 py-8">
   <div id="divReviews" class="container mx-auto px-2 pt-4 pb-12 text-gray-800">
     <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
@@ -295,9 +296,10 @@
     <div class="w-full mb-4">
       <div class="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
     </div>
-    <div class="relative flex flex-col md:flex-row justify-center items-center gap-0 pt-8">
+    <!-- Cambios aquí: flex-col en móvil, flex-row en md+ y gap responsivo -->
+    <div class="relative flex flex-col md:flex-row justify-center items-center gap-6 md:gap-0 pt-8">
       <!-- Reseña 1 -->
-      <div class="bg-white rounded-lg shadow-lg flex flex-col justify-between p-8 mx-auto max-w-sm w-full z-10 md:-mr-8 md:mt-8">
+      <div class="bg-white rounded-lg shadow-lg flex flex-col justify-between p-6 sm:p-8 mx-auto max-w-xs sm:max-w-sm w-full z-10 md:-mr-8 md:mt-8 mb-6 md:mb-0">
         <div class="mb-4 flex items-center justify-center">
           <div class="flex" id="plan-review1-stars">
             <!-- Aquí van las 5 estrellas -->
@@ -308,7 +310,7 @@
         </div>
       </div>
       <!-- Reseña 2 (central, encima) -->
-      <div class="bg-white rounded-lg shadow-2xl flex flex-col justify-between p-10 mx-auto max-w-sm w-full z-20 md:scale-110 md:shadow-2xl md:mt-0 md:mb-8">
+      <div class="bg-white rounded-lg shadow-2xl flex flex-col justify-between p-6 sm:p-10 mx-auto max-w-xs sm:max-w-sm w-full z-20 md:scale-110 md:shadow-2xl md:mt-0 md:mb-8 mb-6 md:mb-0">
         <div class="mb-4 flex items-center justify-center">
           <div class="flex" id="plan-review2-stars">
             <!-- Aquí van las 5 estrellas -->
@@ -319,7 +321,7 @@
         </div>
       </div>
       <!-- Reseña 3 -->
-      <div class="bg-white rounded-lg shadow-lg flex flex-col justify-between p-8 mx-auto max-w-sm w-full z-10 md:-ml-8 md:mt-8">
+      <div class="bg-white rounded-lg shadow-lg flex flex-col justify-between p-6 sm:p-8 mx-auto max-w-xs sm:max-w-sm w-full z-10 md:-ml-8 md:mt-8">
         <div class="mb-4 flex items-center justify-center">
           <div class="flex" id="plan-review3-stars">
             <!-- Aquí van las 5 estrellas -->
@@ -333,98 +335,6 @@
   </div>
 </section>
 
-
-  <!-- Sección de precios -->
-  <section class="bg-gray-100 py-8">
-    <div class="container mx-auto px-2 pt-4 pb-12 text-gray-800">
-      <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
-        Precios
-      </h1>
-      <div class="w-full mb-4">
-        <div class="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
-      </div>
-      <div class="flex flex-col sm:flex-row justify-center pt-12 my-12 sm:my-4">
-
-        <!-- Plan Free -->
-        <div class="flex flex-col w-5/6 lg:w-1/4 mx-auto lg:mx-0 rounded-none lg:rounded-l-lg bg-white mt-4">
-          <div class="flex-1 bg-white text-gray-600 rounded-t rounded-b-none overflow-hidden shadow">
-            <div class="p-8 text-3xl font-bold text-center border-b-4">
-              Gratis
-            </div>
-            <ul class="w-full text-center text-sm">
-              <li class="border-b py-4">Thing</li>
-              <li class="border-b py-4">Thing</li>
-              <li class="border-b py-4">Thing</li>
-            </ul>
-          </div>
-          <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-6">
-            <div class="w-full pt-6 text-3xl text-gray-600 font-bold text-center">
-              $0
-              <span class="text-base">for one user</span>
-            </div>
-            <div class="flex items-center justify-center">
-              <button
-                class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-                Suscribirse
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Plan Basic -->
-        <div class="flex flex-col w-5/6 lg:w-1/3 mx-auto lg:mx-0 rounded-lg bg-white mt-4 sm:-mt-6 shadow-lg z-10">
-          <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden shadow">
-            <div class="w-full p-8 text-3xl font-bold text-center">Básico</div>
-            <div class="h-1 w-full gradient my-0 py-0 rounded-t"></div>
-            <ul class="w-full text-center text-base font-bold">
-              <li class="border-b py-4">Thing</li>
-              <li class="border-b py-4">Thing</li>
-              <li class="border-b py-4">Thing</li>
-              <li class="border-b py-4">Thing</li>
-            </ul>
-          </div>
-          <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-6">
-            <div class="w-full pt-6 text-4xl font-bold text-center">
-              $4.99
-              <span class="text-base">/ per user</span>
-            </div>
-            <div class="flex items-center justify-center">
-              <button
-                class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-                Suscribirse
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Plan Pro -->
-        <div class="flex flex-col w-5/6 lg:w-1/4 mx-auto lg:mx-0 rounded-none lg:rounded-l-lg bg-white mt-4">
-          <div class="flex-1 bg-white text-gray-600 rounded-t rounded-b-none overflow-hidden shadow">
-            <div class="p-8 text-3xl font-bold text-center border-b-4">
-              Pro
-            </div>
-            <ul class="w-full text-center text-sm">
-              <li class="border-b py-4">Thing</li>
-              <li class="border-b py-4">Thing</li>
-              <li class="border-b py-4">Thing</li>
-            </ul>
-          </div>
-          <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-6">
-            <div class="w-full pt-6 text-3xl text-gray-600 font-bold text-center">
-              $7.99
-              <span class="text-base">/ per user</span>
-            </div>
-            <div class="flex items-center justify-center">
-              <button
-                class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-                Suscribirse
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- Ondas decorativas invertidas -->
   <img src="./vectores/fondo-ondas-alreves.svg" alt="Ondas decorativas" />

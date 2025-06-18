@@ -22,6 +22,7 @@ function enableFormReview() {
         saveReview(data);
         fillStars(0);
         form.reset();
+        displayReviews();
     });
 }
 
@@ -69,46 +70,53 @@ function displayReviews() {
         if (!container) return;
 
         // Limpiar contenido previo
-        container.innerHTML = "";
+        //container.innerHTML = "";
 
-        // Ordenar por rating descendente y fecha descendente
-        const sorted = reviews.slice().sort((a, b) => {
-            if (b.rating !== a.rating) {
-                return b.rating - a.rating; // Mayor rating primero
+         // Estructura tipo voteCounts
+        const reviewCounts = [];
+        if (reviews && typeof reviews === 'object') {
+            // Convertir a array y filtrar solo los que tienen rating, review y date
+            Object.values(reviews).forEach(review => {
+                reviewCounts.push(review);
+            });
+                // Ordenar por mayor rating y hora más reciente
+            reviewCounts.sort((a, b) => {
+                if (b.rating !== a.rating) {
+                    return b.rating - a.rating; // Mayor rating primero
+                }
+                return new Date(b.date) - new Date(a.date); // Más reciente primero
+            });
+
+            // Tomar solo los 3 primeros
+            for (let i = 0; i < reviewCounts.length && i < 3; i++) {
+                const review = reviewCounts[i];
+                // Generar estrellas
+                let stars = '';
+                for (let j = 1; j <= 5; j++) {
+                    stars += `<span class="${j <= review.rating ? 'text-yellow-400' : 'text-gray-300'} text-2xl">&#9733;</span>`;
+                }
+
+                // Seleccionar los contenedores por id
+                const starsContainer = document.getElementById(`plan-review${i + 1}-stars`);
+                const commentContainer = document.getElementById(`plan-review${i + 1}-comment`);
+
+                if (starsContainer) starsContainer.innerHTML = stars;
+                if (commentContainer) commentContainer.textContent = review.review;
             }
-            return new Date(b.date) - new Date(a.date); // Más reciente primero
-        });
 
-        // Tomar las 3 mejores
-        const topThree = sorted.slice(0, 3);
-
-        // Renderizar
-        container.innerHTML = topThree.map(review => {
-            let stars = '';
-            for (let i = 1; i <= 5; i++) {
-                stars += `<span class="${i <= review.rating ? 'text-yellow-400' : 'text-gray-300'} text-2xl">&#9733;</span>`;
+            // Si hay menos de 3 reseñas, limpiar los contenedores restantes
+            for (let i = reviewCounts.length; i < 3; i++) {
+                const starsContainer = document.getElementById(`plan-review${i + 1}-stars`);
+                const commentContainer = document.getElementById(`plan-review${i + 1}-comment`);
+                if (starsContainer) starsContainer.innerHTML = '';
+                if (commentContainer) commentContainer.textContent = 'No hay reseñas disponibles.';
             }
-            return `
-                <div class="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto mb-6">
-                    <div class="flex items-center mb-2">
-                        <div class="flex mr-2">${stars}</div>
-                        <span class="text-gray-500 text-sm">${new Date(review.date).toLocaleString()}</span>
-                    </div>
-                    <p class="text-gray-700 italic">${review.comment}</p>
-                </div>
-            `;
-        }).join('');
 
-        if (topThree.length === 0) {
-            container.innerHTML = '<p class="text-center text-gray-500">No hay reseñas disponibles.</p>';
-        }
-    }).catch(() => {
-        const container = document.getElementById('divReviews');
-        if (container) {
-            container.innerHTML = '<p class="text-center text-red-500">Error al cargar las reseñas.</p>';
         }
     });
 }
+
+
 
 (() => {
     enableFormVote();
