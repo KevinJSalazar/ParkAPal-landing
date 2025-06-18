@@ -262,6 +262,78 @@
     </div>
   </section>
 
+  <!-- Sección de reseñas -->
+  <section class="bg-white py-8">
+    <div class="container mx-auto px-4 max-w-lg">
+      <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Deja tu reseña</h2>
+      <form id="form_review" class="bg-gray-50 rounded-lg shadow-md p-6 flex flex-col gap-4">
+        <!-- Rating de estrellas -->
+        <div class="flex items-center justify-center mb-4">
+          <span class="mr-4 text-gray-700 font-semibold">Calificación:</span>
+          <div id="star-rating" class="flex space-x-1 text-3xl cursor-pointer select-none text-gray-300">
+            &#9733;&#9733;&#9733;&#9733;&#9733;
+          </div>
+          <input type="hidden" name="rating" id="rating" value="0">
+        </div>
+        <!-- Comentario -->
+        <textarea name="review" rows="4" placeholder="Escribe tu comentario aquí..."
+          class="p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-400 text-gray-800 bg-white bg-opacity-80"
+          required></textarea>
+        <button type="submit"
+          class="bg-pink-600 text-white font-bold rounded px-6 py-3 hover:bg-pink-700 transition">
+          Enviar reseña
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <section class="bg-gray-100 py-8">
+  <div id="divReviews" class="container mx-auto px-2 pt-4 pb-12 text-gray-800">
+    <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
+      Reseñas destacadas
+    </h1>
+    <div class="w-full mb-4">
+      <div class="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
+    </div>
+    <div class="relative flex flex-col md:flex-row justify-center items-center gap-0 pt-8">
+      <!-- Reseña 1 -->
+      <div class="bg-white rounded-lg shadow-lg flex flex-col justify-between p-8 mx-auto max-w-sm w-full z-10 md:-mr-8 md:mt-8">
+        <div class="mb-4 flex items-center justify-center">
+          <div class="flex" id="plan-review1-stars">
+            <!-- Aquí van las 5 estrellas -->
+          </div>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-700 italic text-center" id="plan-review1-comment"></p>
+        </div>
+      </div>
+      <!-- Reseña 2 (central, encima) -->
+      <div class="bg-white rounded-lg shadow-2xl flex flex-col justify-between p-10 mx-auto max-w-sm w-full z-20 md:scale-110 md:shadow-2xl md:mt-0 md:mb-8">
+        <div class="mb-4 flex items-center justify-center">
+          <div class="flex" id="plan-review2-stars">
+            <!-- Aquí van las 5 estrellas -->
+          </div>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-700 italic text-center" id="plan-review2-comment"></p>
+        </div>
+      </div>
+      <!-- Reseña 3 -->
+      <div class="bg-white rounded-lg shadow-lg flex flex-col justify-between p-8 mx-auto max-w-sm w-full z-10 md:-ml-8 md:mt-8">
+        <div class="mb-4 flex items-center justify-center">
+          <div class="flex" id="plan-review3-stars">
+            <!-- Aquí van las 5 estrellas -->
+          </div>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-700 italic text-center" id="plan-review3-comment"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
   <!-- Sección de precios -->
   <section class="bg-gray-100 py-8">
     <div class="container mx-auto px-2 pt-4 pb-12 text-gray-800">
@@ -375,7 +447,7 @@
 
         <div class="flex flex-col text-left">
           <label for="fullName" class="sr-only">Nombre completo</label>
-          <input id="name" name="fullName" type="name" placeholder="Nombre completo"
+          <input id="name" name="userInput" type="name" placeholder="Nombre completo"
             class="p-3 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-400 text-gray-800 bg-white bg-opacity-80"
             required>
         </div>

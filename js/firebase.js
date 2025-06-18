@@ -35,4 +35,34 @@ function saveVote(data) {
     });
 }
 
-export { saveVote };
+function saveReview(data) {
+  const reviewsCollectionRef = ref(db, 'reviews');
+  const newUserRef = push(reviewsCollectionRef);
+  return set(newUserRef, {
+    rating: data.rating,
+    review: data.review,
+    date: new Date().toISOString()
+  })
+    .then(() => {
+      return { success: true, message: 'Voto guardado correctamente.' };
+    })
+    .catch((error) => {
+      return { success: false, message: 'Error al guardar el voto.', error };
+    });
+}
+
+async function getReviews() {
+  const reviewsRef = ref(db, 'reviews');
+  try {
+    const snapshot = await get(reviewsRef);
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      return {};
+    }
+  } catch (error) {
+    return { error: true, message: `Error al obtener los votos: ${error.message}` };
+  }
+}
+
+export { saveVote, saveReview, getReviews };
