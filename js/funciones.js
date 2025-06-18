@@ -69,17 +69,12 @@ function displayReviews() {
         const container = document.getElementById('divReviews');
         if (!container) return;
 
-        // Limpiar contenido previo
-        //container.innerHTML = "";
-
-         // Estructura tipo voteCounts
         const reviewCounts = [];
         if (reviews && typeof reviews === 'object') {
-            // Convertir a array y filtrar solo los que tienen rating, review y date
             Object.values(reviews).forEach(review => {
                 reviewCounts.push(review);
             });
-                // Ordenar por mayor rating y hora más reciente
+            // Ordenar por mayor rating y hora más reciente
             reviewCounts.sort((a, b) => {
                 if (b.rating !== a.rating) {
                     return b.rating - a.rating; // Mayor rating primero
