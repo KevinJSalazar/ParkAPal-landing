@@ -21,23 +21,78 @@ function enableSmoothScrollSaberMas() {
 }
 
 /**
- * Muestra la tabla de Espacios disponibles al enviar el formulario de búsqueda.
+ * Filtra y muestra los espacios disponibles según los criterios del formulario de búsqueda.
+ * Además, muestra una alerta al reservar.
  */
-function enableShowEspaciosOnSearch() {
-    // Selecciona el formulario de búsqueda y la sección de la tabla
+function enableEspaciosSearchFilter() {
     const form = document.querySelector('section#estacionamientos form');
-    // Selecciona la sección de la tabla de espacios disponibles
     const tablaSection = document.querySelector('section#estacionamientos section.bg-gray-100.py-8');
-    if (!form || !tablaSection) return;
+    const tbody = tablaSection ? tablaSection.querySelector('tbody') : null;
+    let espaciosOriginales = [];
 
-    // Oculta la tabla inicialmente
-    tablaSection.style.display = 'none';
+    function cargarEspacios() {
+        fetch("/espacios.json")
+            .then(response => response.json())
+            .then(data => {
+                espaciosOriginales = data;
+                mostrarEspacios(data);
+            })
+            .catch(error => console.error("Error al cargar los espacios:", error));
+    }
 
-    // Al enviar el formulario, muestra la tabla y evita el envío real
-    form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        tablaSection.style.display = '';
-    });
+    function mostrarEspacios(espacios) {
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        if (espacios.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-gray-500">No se encontraron espacios disponibles.</td></tr>`;
+            return;
+        }
+        espacios.forEach(espacio => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.lugar}</td>
+                <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.fecha}</td>
+                <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.tipoVehiculo}</td>
+                <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.distancia}</td>
+                <td class="py-2 px-4 border-b text-center">
+                    <button class="bg-pink-600 text-white px-4 py-1 rounded hover:bg-pink-700 reservar-btn">Reservar</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Agrega el evento a todos los botones "Reservar"
+        tbody.querySelectorAll('.reservar-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                alert('¡Reserva hecha!');
+            });
+        });
+    }
+
+    if (tablaSection) tablaSection.style.display = 'none';
+
+    if (form && tablaSection) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const lugar = form.querySelector('#lugar-select').value;
+            const fecha = form.querySelector('input[type="date"]').value;
+            const tipoVehiculo = form.querySelector('select:not(#lugar-select)').value;
+            const distancia = form.querySelector('input[type="number"]').value;
+
+            const filtrados = espaciosOriginales.filter(espacio => {
+                const coincideLugar = !lugar || espacio.lugar === lugar;
+                const coincideFecha = !fecha || espacio.fecha === fecha;
+                const coincideTipo = !tipoVehiculo || espacio.tipoVehiculo.toLowerCase() === tipoVehiculo.toLowerCase();
+                const coincideDistancia = !distancia || Number(espacio.distancia) <= Number(distancia);
+                return coincideLugar && coincideFecha && coincideTipo && coincideDistancia;
+            });
+
+            mostrarEspacios(filtrados);
+            tablaSection.style.display = '';
+        });
+    }
+
+    cargarEspacios();
 }
 
 /**
@@ -153,32 +208,6 @@ function enableSmoothScrollToContact() {
 }
 
 /**
- * Pobla la tabla de espacios disponibles usando datos de un archivo JSON.
- */
-function populateEspaciosTable() {
-    fetch("/espacios.json")
-        .then(response => response.json())
-        .then(data => {
-            const tbody = document.querySelector("tbody");
-            if (!tbody) return;
-            data.forEach(espacio => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.lugar}</td>
-                    <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.fecha}</td>
-                    <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.tipoVehiculo}</td>
-                    <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.distancia}</td>
-                    <td class="py-2 px-4 border-b text-center">
-                        <button class="bg-pink-600 text-white px-4 py-1 rounded hover:bg-pink-700">Reservar</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        })
-        .catch(error => console.error("Error al cargar los espacios:", error));
-}
-
-/**
  * Pobla el combo box de lugares y de tipo de vehículo en la barra de búsqueda.
  */
 function populateSearchCombos() {
@@ -284,12 +313,11 @@ document.addEventListener('DOMContentLoaded', () => {
     enableFormReview();
     displayReviews();
     enableSmoothScrollToContact();
-    populateEspaciosTable();
     populateSearchCombos();
     enableStarRating();
     enableCarousel();
-    enableShowEspaciosOnSearch();
     enableSmoothScrollSaberMas();
+    enableEspaciosSearchFilter();
 
     // Scroll suave para enlaces de navegación internos
     document.querySelectorAll('nav a[href^="#"]').forEach(function (enlace) {
