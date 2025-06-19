@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    fetch("espacios.json")
+    fetch("./espacios.json")
         .then(response => response.json())
         .then(data => {
             const tbody = document.querySelector("tbody");
