@@ -4,6 +4,26 @@
 import { saveVote, saveReview, getReviews } from "./firebase.js";
 
 /**
+ * Muestra la tabla de Espacios disponibles al enviar el formulario de búsqueda.
+ */
+function enableShowEspaciosOnSearch() {
+    // Selecciona el formulario de búsqueda y la sección de la tabla
+    const form = document.querySelector('section#estacionamientos form');
+    // Selecciona la sección de la tabla de espacios disponibles
+    const tablaSection = document.querySelector('section#estacionamientos section.bg-gray-100.py-8');
+    if (!form || !tablaSection) return;
+
+    // Oculta la tabla inicialmente
+    tablaSection.style.display = 'none';
+
+    // Al enviar el formulario, muestra la tabla y evita el envío real
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        tablaSection.style.display = '';
+    });
+}
+
+/**
  * Habilita el formulario de votación y gestiona su envío.
  */
 function enableFormVote() {
@@ -119,7 +139,7 @@ function enableSmoothScrollToContact() {
  * Pobla la tabla de espacios disponibles usando datos de un archivo JSON.
  */
 function populateEspaciosTable() {
-    fetch("public/espacios.json")
+    fetch("/espacios.json")
         .then(response => response.json())
         .then(data => {
             const tbody = document.querySelector("tbody");
@@ -251,4 +271,16 @@ document.addEventListener('DOMContentLoaded', () => {
     populateSearchCombos();
     enableStarRating();
     enableCarousel();
+    enableShowEspaciosOnSearch();
+
+    // Scroll suave para enlaces de navegación internos
+    document.querySelectorAll('nav a[href^="#"]').forEach(function (enlace) {
+        enlace.addEventListener('click', function (e) {
+            e.preventDefault();
+            const destino = document.querySelector(this.getAttribute('href'));
+            if (destino) {
+                destino.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
 });

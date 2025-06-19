@@ -1,18 +1,18 @@
 [
   {
-    "lugar": "Centro Comercial X",
+    "lugar": "Mall del Sol",
     "fecha": "2025-06-10",
     "tipoVehiculo": "Carro",
     "distancia": 0.5
   },
   {
-    "lugar": "Edificio Empresarial Y",
+    "lugar": "Rio Centro Ceibos",
     "fecha": "2025-06-11",
     "tipoVehiculo": "Moto",
     "distancia": 0.8
   },
   {
-    "lugar": "Plaza Pública Z",
+    "lugar": "Mall del Sur",
     "fecha": "2025-06-12",
     "tipoVehiculo": "Bicicleta",
     "distancia": 0.2
