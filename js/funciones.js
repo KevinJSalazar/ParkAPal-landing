@@ -4,6 +4,23 @@
 import { saveVote, saveReview, getReviews } from "./firebase.js";
 
 /**
+ * Habilita el desplazamiento suave para el botón "Saber más".
+ */
+function enableSmoothScrollSaberMas() {
+    // Busca el botón "Saber más" dentro de un enlace que apunte a #estacionamientos
+    const saberMasLink = document.querySelector('a[href="#estacionamientos"] > button');
+    if (saberMasLink) {
+        saberMasLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            const destino = document.getElementById('estacionamientos');
+            if (destino) {
+                destino.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+}
+
+/**
  * Muestra la tabla de Espacios disponibles al enviar el formulario de búsqueda.
  */
 function enableShowEspaciosOnSearch() {
@@ -272,6 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
     enableStarRating();
     enableCarousel();
     enableShowEspaciosOnSearch();
+    enableSmoothScrollSaberMas();
 
     // Scroll suave para enlaces de navegación internos
     document.querySelectorAll('nav a[href^="#"]').forEach(function (enlace) {

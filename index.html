@@ -47,9 +47,9 @@
                     <li class="mr-3"><a class="inline-block py-2 px-4 text-black font-bold" href="#inicio">Inicio</a>
                     </li>
                     <li class="mr-3"><a class="inline-block text-black hover:text-gray-800 py-2 px-4"
-                            href="#estacionamientos">Estacionamientos</a></li>
-                    <li class="mr-3"><a class="inline-block text-black hover:text-gray-800 py-2 px-4"
                             href="#sobre-nosotros">Sobre nosotros</a></li>
+                    <li class="mr-3"><a class="inline-block text-black hover:text-gray-800 py-2 px-4"
+                            href="#reseñas">Reseñas</a></li>
                 </ul>
                 <a href="#contactanos">
                     <button id="navAction"
@@ -69,10 +69,12 @@
                 <p class="uppercase tracking-loose w-full">¿Buscas un lugar de parqueo?</p>
                 <h1 class="my-4 text-5xl font-bold leading-tight">¡Parkapal es tu colega!</h1>
                 <p class="leading-normal text-2xl mb-8">Selecciona un lugar, revisa su disponibilidad y reserva!</p>
-                <button
-                    class="mx-auto lg:mx-0 bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none hover:scale-105 transition">
-                    Saber más
-                </button>
+                <a href="#estacionamientos">
+                    <button
+                        class="mx-auto lg:mx-0 bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none hover:scale-105 transition">
+                        Saber más
+                    </button>
+                </a>
             </div>
             <div class="w-full md:w-3/5 py-6 text-center pr-8">
                 <img class="w-full md:w-4/5 z-50 ml-auto" src="./imagenes/estacionamiento.png" alt="Imagen principal" />
@@ -89,7 +91,7 @@
         <!-- Barra de búsqueda de parqueo -->
         <section id="estacionamientos" class="bg-white py-8">
             <div class="container mx-auto px-4">
-                <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
+                <h1 class="mt-8 w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
                     Buscar espacio para parquear
                 </h1>
                 <div class="w-full mb-4">
@@ -220,7 +222,7 @@
         </section>
 
         <!-- Reseñas y contacto -->
-        <section id="contactanos">
+        <section id="reseñas">
             <section class="bg-white py-8">
                 <div class="container mx-auto max-w-lg">
                     <h1 class="mt-8 w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
@@ -295,8 +297,10 @@
 
             <!-- Ondas decorativas invertidas -->
             <img src="./vectores/fondo-ondas-alreves.svg" alt="Ondas decorativas" />
+        </section>
 
-            <!-- Formulario de contacto -->
+        <!-- Sección de contacto -->
+        <section id="contactanos">
             <section class="container mx-auto text-center py-6 mb-12 flex justify-center items-center">
                 <div class="w-full md:w-3/4 lg:w-2/4 xl:w-2/5">
                     <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-white">Contáctanos</h1>
@@ -330,7 +334,7 @@
                         </div>
                         <button type="submit"
                             class="bg-pink-600 text-white font-bold rounded px-6 py-3 hover:bg-pink-700 transition">
-                            ¡Estoy interesado!
+                            Enviar comentario
                         </button>
                     </form>
                 </div>
