@@ -1,6 +1,6 @@
 "use strict";
 
-import { saveVote , saveReview , getReviews } from "./firebase.js";
+import { saveVote, saveReview, getReviews } from "./firebase.js";
 
 function enableFormVote() {
     const form = document.getElementById('form_voting');
@@ -12,6 +12,44 @@ function enableFormVote() {
         form.reset();
     });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const btn = document.getElementById('navAction');
+    if (btn) {
+        btn.addEventListener('click', function () {
+            const section = document.getElementById('contactanos');
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("espacios.json")
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector("tbody");
+
+            data.forEach(espacio => {
+                const tr = document.createElement("tr");
+
+                tr.innerHTML = `
+          <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.lugar}</td>
+          <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.fecha}</td>
+          <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.tipoVehiculo}</td>
+          <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.distancia}</td>
+          <td class="py-2 px-4 border-b text-center">
+            <button class="bg-pink-600 text-white px-4 py-1 rounded hover:bg-pink-700">Reservar</button>
+          </td>
+        `;
+
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(error => console.error("Error al cargar los espacios:", error));
+});
+
 
 function enableFormReview() {
     const form = document.getElementById('form_review');
@@ -30,38 +68,38 @@ function fillStars(rating) {
     const starRating = document.getElementById('star-rating');
     let stars = '';
     for (let i = 1; i <= 5; i++) {
-      stars += i <= rating
-        ? '<span style="color:#fbbf24">&#9733;</span>'
-        : '<span style="color:#d1d5db">&#9733;</span>';
+        stars += i <= rating
+            ? '<span style="color:#fbbf24">&#9733;</span>'
+            : '<span style="color:#d1d5db">&#9733;</span>';
     }
     starRating.innerHTML = stars;
-  }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-  const starRating = document.getElementById('star-rating');
-  const ratingInput = document.getElementById('rating');
-  let currentRating = 0;
+    const starRating = document.getElementById('star-rating');
+    const ratingInput = document.getElementById('rating');
+    let currentRating = 0;
 
-  starRating.addEventListener('mousemove', (e) => {
-    const rect = starRating.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const starWidth = rect.width / 5;
-    const hoverRating = Math.ceil(x / starWidth);
-    fillStars(hoverRating);
-  });
+    starRating.addEventListener('mousemove', (e) => {
+        const rect = starRating.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const starWidth = rect.width / 5;
+        const hoverRating = Math.ceil(x / starWidth);
+        fillStars(hoverRating);
+    });
 
-  starRating.addEventListener('mouseleave', () => {
-    fillStars(currentRating);
-  });
+    starRating.addEventListener('mouseleave', () => {
+        fillStars(currentRating);
+    });
 
-  starRating.addEventListener('click', (e) => {
-    const rect = starRating.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const starWidth = rect.width / 5;
-    currentRating = Math.ceil(x / starWidth);
-    ratingInput.value = currentRating;
-    fillStars(currentRating);
-  });
+    starRating.addEventListener('click', (e) => {
+        const rect = starRating.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const starWidth = rect.width / 5;
+        currentRating = Math.ceil(x / starWidth);
+        ratingInput.value = currentRating;
+        fillStars(currentRating);
+    });
 });
 
 function displayReviews() {
