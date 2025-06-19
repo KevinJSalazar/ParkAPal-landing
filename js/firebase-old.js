@@ -1,8 +1,8 @@
 // Importa las funciones principales de Firebase desde el CDN (v11.9.1)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-import { getDatabase, ref, set, push, get } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+import { getDatabase, ref, set, push, get, child } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
-// Configuración de Firebase usando variables de entorno de Vite
+// Configuración usando variables de entorno de Vite
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -12,17 +12,12 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-// Inicializa la app de Firebase con la configuración proporcionada
+// Inicializa la app de Firebase con el objeto de configuración importado desde las variables de entorno
 const app = initializeApp(firebaseConfig);
 
-// Obtiene la referencia a la base de datos en tiempo real de Firebase
+// Obtiene la referencia a la base de datos en tiempo real
 const db = getDatabase(app);
 
-/**
- * Guarda un voto en la base de datos.
- * @param {Object} data - Datos del voto (usuario, email, mensaje).
- * @returns {Promise<Object>} Resultado de la operación.
- */
 function saveVote(data) {
   const votesCollectionRef = ref(db, 'votes');
   const newUserRef = push(votesCollectionRef);
@@ -40,11 +35,6 @@ function saveVote(data) {
     });
 }
 
-/**
- * Guarda una reseña en la base de datos.
- * @param {Object} data - Datos de la reseña (calificación, comentario).
- * @returns {Promise<Object>} Resultado de la operación.
- */
 function saveReview(data) {
   const reviewsCollectionRef = ref(db, 'reviews');
   const newUserRef = push(reviewsCollectionRef);
@@ -54,17 +44,13 @@ function saveReview(data) {
     date: new Date().toISOString()
   })
     .then(() => {
-      return { success: true, message: 'Reseña guardada correctamente.' };
+      return { success: true, message: 'Voto guardado correctamente.' };
     })
     .catch((error) => {
-      return { success: false, message: 'Error al guardar la reseña.', error };
+      return { success: false, message: 'Error al guardar el voto.', error };
     });
 }
 
-/**
- * Obtiene todas las reseñas almacenadas en la base de datos.
- * @returns {Promise<Object>} Objeto con las reseñas o un objeto vacío.
- */
 async function getReviews() {
   const reviewsRef = ref(db, 'reviews');
   try {
@@ -79,5 +65,4 @@ async function getReviews() {
   }
 }
 
-// Exporta las funciones para su uso en otros módulos
 export { saveVote, saveReview, getReviews };

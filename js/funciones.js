@@ -1,9 +1,14 @@
 "use strict";
 
+// Importa funciones de Firebase
 import { saveVote, saveReview, getReviews } from "./firebase.js";
 
+/**
+ * Habilita el formulario de votación y gestiona su envío.
+ */
 function enableFormVote() {
     const form = document.getElementById('form_voting');
+    if (!form) return;
     form.addEventListener('submit', function (event) {
         event.preventDefault();
         const formData = new FormData(form);
@@ -13,46 +18,12 @@ function enableFormVote() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    const btn = document.getElementById('navAction');
-    if (btn) {
-        btn.addEventListener('click', function () {
-            const section = document.getElementById('contactanos');
-            if (section) {
-                section.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-    fetch("public/espacios.json")
-        .then(response => response.json())
-        .then(data => {
-            const tbody = document.querySelector("tbody");
-
-            data.forEach(espacio => {
-                const tr = document.createElement("tr");
-
-                tr.innerHTML = `
-          <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.lugar}</td>
-          <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.fecha}</td>
-          <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.tipoVehiculo}</td>
-          <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.distancia}</td>
-          <td class="py-2 px-4 border-b text-center">
-            <button class="bg-pink-600 text-white px-4 py-1 rounded hover:bg-pink-700">Reservar</button>
-          </td>
-        `;
-
-                tbody.appendChild(tr);
-            });
-        })
-        .catch(error => console.error("Error al cargar los espacios:", error));
-});
-
-
+/**
+ * Habilita el formulario de reseñas y gestiona su envío.
+ */
 function enableFormReview() {
     const form = document.getElementById('form_review');
+    if (!form) return;
     form.addEventListener('submit', function (event) {
         event.preventDefault();
         const formData = new FormData(form);
@@ -64,8 +35,13 @@ function enableFormReview() {
     });
 }
 
+/**
+ * Rellena las estrellas de calificación visualmente.
+ * @param {number} rating - Calificación seleccionada.
+ */
 function fillStars(rating) {
     const starRating = document.getElementById('star-rating');
+    if (!starRating) return;
     let stars = '';
     for (let i = 1; i <= 5; i++) {
         stars += i <= rating
@@ -75,9 +51,147 @@ function fillStars(rating) {
     starRating.innerHTML = stars;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+/**
+ * Muestra las reseñas destacadas en la sección correspondiente.
+ */
+function displayReviews() {
+    getReviews().then(reviews => {
+        const container = document.getElementById('divReviews');
+        if (!container) return;
+
+        const reviewCounts = [];
+        if (reviews && typeof reviews === 'object') {
+            Object.values(reviews).forEach(review => {
+                reviewCounts.push(review);
+            });
+            // Ordenar por mayor rating y fecha más reciente
+            reviewCounts.sort((a, b) => {
+                if (b.rating !== a.rating) {
+                    return b.rating - a.rating;
+                }
+                return new Date(b.date) - new Date(a.date);
+            });
+
+            // Mostrar solo las 3 mejores reseñas
+            for (let i = 0; i < reviewCounts.length && i < 3; i++) {
+                const review = reviewCounts[i];
+                // Generar estrellas visuales
+                let stars = '';
+                for (let j = 1; j <= 5; j++) {
+                    stars += `<span class="${j <= review.rating ? 'text-yellow-400' : 'text-gray-300'} text-2xl">&#9733;</span>`;
+                }
+
+                // Seleccionar los contenedores por id
+                const starsContainer = document.getElementById(`plan-review${i + 1}-stars`);
+                const commentContainer = document.getElementById(`plan-review${i + 1}-comment`);
+
+                if (starsContainer) starsContainer.innerHTML = stars;
+                if (commentContainer) commentContainer.textContent = review.review;
+            }
+
+            // Limpiar los contenedores restantes si hay menos de 3 reseñas
+            for (let i = reviewCounts.length; i < 3; i++) {
+                const starsContainer = document.getElementById(`plan-review${i + 1}-stars`);
+                const commentContainer = document.getElementById(`plan-review${i + 1}-comment`);
+                if (starsContainer) starsContainer.innerHTML = '';
+                if (commentContainer) commentContainer.textContent = 'No hay reseñas disponibles.';
+            }
+        }
+    });
+}
+
+/**
+ * Inicializa el scroll suave al hacer clic en el botón "Contáctanos".
+ */
+function enableSmoothScrollToContact() {
+    const btn = document.getElementById('navAction');
+    if (btn) {
+        btn.addEventListener('click', function () {
+            const section = document.getElementById('contactanos');
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+}
+
+/**
+ * Pobla la tabla de espacios disponibles usando datos de un archivo JSON.
+ */
+function populateEspaciosTable() {
+    fetch("public/espacios.json")
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector("tbody");
+            if (!tbody) return;
+            data.forEach(espacio => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.lugar}</td>
+                    <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.fecha}</td>
+                    <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.tipoVehiculo}</td>
+                    <td class="py-2 px-4 border-b text-center text-gray-800">${espacio.distancia}</td>
+                    <td class="py-2 px-4 border-b text-center">
+                        <button class="bg-pink-600 text-white px-4 py-1 rounded hover:bg-pink-700">Reservar</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(error => console.error("Error al cargar los espacios:", error));
+}
+
+/**
+ * Pobla el combo box de lugares y de tipo de vehículo en la barra de búsqueda.
+ */
+function populateSearchCombos() {
+    // Opciones de lugares (puedes hacer esto dinámico si lo deseas)
+    const lugares = [
+        "Mall del Sur",
+        "Rio Centro Ceibos",
+        "Mall del Sol"
+    ];
+    const selectLugar = document.getElementById('lugar-select');
+    if (selectLugar) {
+        lugares.forEach(lugar => {
+            const option = document.createElement('option');
+            option.value = lugar;
+            option.textContent = lugar;
+            selectLugar.appendChild(option);
+        });
+    }
+
+    // Opciones de tipo de vehículo
+    const tiposVehiculo = [
+        "Carro",
+        "Moto",
+        "Bicicleta"
+    ];
+    // Busca todos los selects y agrega las opciones solo al de tipo de vehículo
+    const selectsTipo = document.querySelectorAll('select');
+    selectsTipo.forEach(select => {
+        if (select.options[0] && select.options[0].textContent.includes('Tipo de vehículo')) {
+            // Elimina las opciones existentes excepto la primera
+            while (select.options.length > 1) {
+                select.remove(1);
+            }
+            tiposVehiculo.forEach(tipo => {
+                const option = document.createElement('option');
+                option.value = tipo.toLowerCase();
+                option.textContent = tipo;
+                select.appendChild(option);
+            });
+        }
+    });
+}
+
+/**
+ * Inicializa el sistema de calificación con estrellas.
+ */
+function enableStarRating() {
     const starRating = document.getElementById('star-rating');
     const ratingInput = document.getElementById('rating');
+    if (!starRating || !ratingInput) return;
     let currentRating = 0;
 
     starRating.addEventListener('mousemove', (e) => {
@@ -100,72 +214,41 @@ document.addEventListener('DOMContentLoaded', () => {
         ratingInput.value = currentRating;
         fillStars(currentRating);
     });
-});
-
-function displayReviews() {
-    getReviews().then(reviews => {
-        const container = document.getElementById('divReviews');
-        if (!container) return;
-
-        const reviewCounts = [];
-        if (reviews && typeof reviews === 'object') {
-            Object.values(reviews).forEach(review => {
-                reviewCounts.push(review);
-            });
-            // Ordenar por mayor rating y hora más reciente
-            reviewCounts.sort((a, b) => {
-                if (b.rating !== a.rating) {
-                    return b.rating - a.rating; // Mayor rating primero
-                }
-                return new Date(b.date) - new Date(a.date); // Más reciente primero
-            });
-
-            // Tomar solo los 3 primeros
-            for (let i = 0; i < reviewCounts.length && i < 3; i++) {
-                const review = reviewCounts[i];
-                // Generar estrellas
-                let stars = '';
-                for (let j = 1; j <= 5; j++) {
-                    stars += `<span class="${j <= review.rating ? 'text-yellow-400' : 'text-gray-300'} text-2xl">&#9733;</span>`;
-                }
-
-                // Seleccionar los contenedores por id
-                const starsContainer = document.getElementById(`plan-review${i + 1}-stars`);
-                const commentContainer = document.getElementById(`plan-review${i + 1}-comment`);
-
-                if (starsContainer) starsContainer.innerHTML = stars;
-                if (commentContainer) commentContainer.textContent = review.review;
-            }
-
-            // Si hay menos de 3 reseñas, limpiar los contenedores restantes
-            for (let i = reviewCounts.length; i < 3; i++) {
-                const starsContainer = document.getElementById(`plan-review${i + 1}-stars`);
-                const commentContainer = document.getElementById(`plan-review${i + 1}-comment`);
-                if (starsContainer) starsContainer.innerHTML = '';
-                if (commentContainer) commentContainer.textContent = 'No hay reseñas disponibles.';
-            }
-
-        }
-    });
 }
 
+/**
+ * Inicializa el carrusel de imágenes.
+ */
+function enableCarousel() {
+    const carousel = document.querySelector('#carousel > div');
+    if (!carousel) return;
+    const slides = carousel.children.length;
+    let current = 0;
 
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    if (prevBtn) {
+        prevBtn.onclick = function () {
+            current = (current - 1 + slides) % slides;
+            carousel.style.transform = `translateX(-${current * 100}%)`;
+        };
+    }
+    if (nextBtn) {
+        nextBtn.onclick = function () {
+            current = (current + 1) % slides;
+            carousel.style.transform = `translateX(-${current * 100}%)`;
+        };
+    }
+}
 
-(() => {
+// Inicialización de todas las funciones al cargar el DOM
+document.addEventListener('DOMContentLoaded', () => {
     enableFormVote();
     enableFormReview();
     displayReviews();
-})();
-
-const carousel = document.querySelector('#carousel > div');
-const slides = carousel.children.length;
-let current = 0;
-
-document.getElementById('prev').onclick = function () {
-    current = (current - 1 + slides) % slides;
-    carousel.style.transform = `translateX(-${current * 100}%)`;
-};
-document.getElementById('next').onclick = function () {
-    current = (current + 1) % slides;
-    carousel.style.transform = `translateX(-${current * 100}%)`;
-};
+    enableSmoothScrollToContact();
+    populateEspaciosTable();
+    populateSearchCombos();
+    enableStarRating();
+    enableCarousel();
+});
